@@ -49,9 +49,6 @@ func main() {
 			}
 
 			for k, vals := range re.Request.Header {
-				if k == "Authorization" {
-					continue
-				}
 				for _, v := range vals {
 					req.Header.Add(k, v)
 				}
