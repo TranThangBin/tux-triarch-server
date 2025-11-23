@@ -1,0 +1,45 @@
+services:
+  tux_triarch-dev:
+    container_name: tux_triarch-dev
+    image: docker.io/cosmtrek/air:v1.63.1
+    working_dir: /app
+    volumes:
+      - tux_triarch-dev-cache:/go
+      - ./go.mod:/app/go.mod
+      - ./go.sum:/app/go.sum
+      - ./air.toml:/app/air.toml
+      - ./cmd:/app/cmd
+      - ./pb_data:/app/pb_data
+    command: >
+      -c /app/air.toml
+    environment:
+      - air_wd=/app
+    ports:
+      - 8079:8079
+
+  orion:
+    image: docker.io/fiware/orion-ld
+    hostname: orion
+    container_name: fiware-orion
+    expose:
+      - "1026"
+    ports:
+      - "1026:1026"
+    depends_on:
+      - mongo-db
+    command: -dbhost mongo-db -logLevel DEBUG
+
+  mongo-db:
+    image: docker.io/library/mongo:3.6
+    hostname: mongo-db
+    container_name: db-mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - default
+    command: --nojournal
+    volumes:
+      - ./mongo_db_data:/data
+
+volumes:
+  tux_triarch-dev-cache:
