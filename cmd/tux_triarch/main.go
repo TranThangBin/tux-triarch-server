@@ -17,6 +17,12 @@ var (
 	ORION_URL = os.Getenv("ORION_URL")
 )
 
+func init() {
+	if ORION_URL == "" {
+		ORION_URL = "http://localhost:1026"
+	}
+}
+
 func main() {
 	app := pocketbase.New()
 
