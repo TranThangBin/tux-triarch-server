@@ -9,11 +9,12 @@ services:
       - ./go.sum:/app/go.sum
       - ./air.toml:/app/air.toml
       - ./cmd:/app/cmd
-      - ./pb_data:/app/pb_data
+      - ./pb_data:/app/tmp/pb_data
     command: >
       -c /app/air.toml
     environment:
       - air_wd=/app
+      - ORION_URL=http://orion:1026
     ports:
       - 8079:8079
 
@@ -39,7 +40,7 @@ services:
       - default
     command: --nojournal
     volumes:
-      - ./mongo_db_data:/data
+      - ./mongo_db_data:/data/db
 
 volumes:
   tux_triarch-dev-cache:
